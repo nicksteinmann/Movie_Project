@@ -1,6 +1,6 @@
 import statistics
 import random
-import movie_storage_sql as storage
+from storage import movie_storage_sql as storage
 import requests
 import os
 from dotenv import load_dotenv
@@ -266,7 +266,7 @@ def generate_website():
 
     movies = storage.list_movies()
 
-    with open("index_template.html", "r") as file:
+    with open("static/index_template.html", "r") as file:
         template = file.read()
 
     movie_grid = ""
@@ -288,11 +288,11 @@ def generate_website():
     html_content = template.replace("__TEMPLATE_TITLE__", "My Movie App")
     html_content = html_content.replace("__TEMPLATE_MOVIE_GRID__", movie_grid)
 
-    with open("index.html", "w") as file:
+    with open("static/index.html", "w") as file:
         file.write(html_content)
 
     print("Website was generated successfully.")
 
-    
+
 if __name__ == "__main__":
     main()

@@ -69,7 +69,7 @@ API_KEY=your_omdb_api_key_here
 Run the application:
 
 ```bash
-python movies.py
+python main.py
 ```
 
 Follow the menu in the terminal.
@@ -97,15 +97,24 @@ Open it in your browser to view your movie collection.
 ## Project Structure
 
 ```text
-movie-app/
-│
-├── movies.py
-├── movie_storage_sql.py
-├── movies.db
-├── index_template.html
-├── style.css
-├── requirements.txt
-├── README.md
+movie-app/ 
+│ 
+├── data/ 
+│   └── movies.db 
+│ 
+├── storage/ 
+│   ├── __init__.py 
+│   └── movie_storage_sql.py 
+│ 
+├── static/ 
+│   ├── index_template.html 
+│   └── style.css 
+│ 
+├── main.py 
+├── movies.py 
+├── requirements.txt 
+├── README.md 
+├── .gitignore 
 └── .env (not tracked)
 ```
 

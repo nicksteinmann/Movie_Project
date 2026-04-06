@@ -9,7 +9,7 @@ load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
 
-API_URL = f"http://www.omdbapi.com/?apikey={API_KEY}&t={title}"
+API_URL = f"http://www.omdbapi.com/?apikey={API_KEY}&t="
 
 
 def main():
@@ -85,14 +85,8 @@ def add_movie():
     """
     Adds a new movie to the database.
 
-    Parameters:
-        None
-
-    Returns:
-        None
-
-    Prompts the user for title.
-    Uses storage.add_movie to persist data.
+    Prompts the user for title, fetches movie data
+    from OMDb API and stores it in the database.
     """
     movies = storage.list_movies()
 
@@ -105,27 +99,33 @@ def add_movie():
         else:
             break
 
-    while True:
-        year_input = input("Enter year of release: ").strip()
-        if not year_input.isdigit():
-            print("Year must be a number. Try again.")
-        else:
-            year = int(year_input)
-            break
+    api_url_title = API_URL + title
 
-    while True:
-        rating_input = input("Enter movie rating (1-10): ").strip()
-        try:
-            rating = float(rating_input)
-            if rating < 1 or rating > 10:
-                print("Rating must be between 1 and 10. Try again.")
-            else:
-                break
-        except ValueError:
-            print("Rating must be a number. Try again.")
+    try:
+        response = requests.get(api_url_title)
+        movie_data = response.json()
+    except Exception as error:
+        print(f"Error connecting to the API : {error}")
+        return
 
-    storage.add_movie(title, year, rating)
-    print(f"Movie '{title}' successfully added.")
+    if movie_data.get("Response") == "False":
+        print("Movie not found.")
+        return
+
+    movie_title = movie_data.get("Title")
+    year = movie_data.get("Year")
+    rating = movie_data.get("imdbRating")
+    poster = movie_data.get("Poster")
+
+    try:
+        year = int(year)
+        rating = float(rating)
+    except (TypeError, ValueError):
+        print("Error: Invalid movie data received from API")
+        return
+
+    storage.add_movie(movie_title, year, rating, poster)
+    print(f"Movie '{movie_title}' successfully added.")
 
 
 def delete_movie():

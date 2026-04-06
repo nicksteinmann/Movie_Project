@@ -23,7 +23,7 @@ def main():
     print("Welcome to the Movie Database!")
     while True:
         print_menu()
-        choice = input("Enter choice (1-8, 0 to Exit): ").strip()
+        choice = input("Enter choice (1-9, 0 to Exit): ").strip()
 
         # Changed: Exit moved to the bottom of the menu
         if choice == "1":
@@ -42,11 +42,13 @@ def main():
             search_movie()
         elif choice == "8":
             sort_movies()
+        elif choice == "9":
+            generate_website()
         elif choice == "0":
             print("Bye!")
             break
         else:
-            print("Invalid choice. Please enter a number from 0 to 8.\n")
+            print("Invalid choice. Please enter a number from 0 to 9.\n")
 
 
 def print_menu():
@@ -62,6 +64,7 @@ def print_menu():
     print("6. Random Movie")
     print("7. Search Movie")
     print("8. Movies Sorted by Rating")
+    print("9. Generate website")
     print("0. Exit")  # Exit at the bottom, Changed
 
 
@@ -258,5 +261,38 @@ def sort_movies():
         print(f"{title} ({info['year']}) - Rating: {info['rating']}")
 
 
+def generate_website():
+    """Generates a website from the movie database."""
+
+    movies = storage.list_movies()
+
+    with open("index_template.html", "r") as file:
+        template = file.read()
+
+    movie_grid = ""
+
+    for title, info in movies.items():
+        poster = info.get("poster", "")
+        year = info.get("year", "")
+
+        movie_grid += f"""
+        <li>
+            <div class="movie">
+                <img class="movie-poster" src="{poster}" alt="{title} poster"/>
+                <div class="movie-title">{title}</div>
+                <div class="movie-year">{year}</div>
+            </div>
+        </li>
+        """
+
+    html_content = template.replace("__TEMPLATE_TITLE__", "My Movie App")
+    html_content = html_content.replace("__TEMPLATE_MOVIE_GRID__", movie_grid)
+
+    with open("index.html", "w") as file:
+        file.write(html_content)
+
+    print("Website was generated successfully.")
+
+    
 if __name__ == "__main__":
     main()

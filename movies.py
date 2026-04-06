@@ -3,17 +3,6 @@ import random
 import movie_storage_sql as storage
 
 
-def command_list_movies():
-    """Retrieve and display all movies from the database."""
-    movies = storage.list_movies()
-    print(f"{len(movies)} movies in total")
-    for movie, data in movies.items():
-        print(f"{movie} ({data['year']}): {data['rating']}")
-
-
-...
-
-
 def main():
     """
     Main entry point for the Movie CLI application.

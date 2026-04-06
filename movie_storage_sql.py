@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 
-DB_URL = "sqlite:///movies.db"
+DB_URL = "sqlite:///data/movies.db"
 engine = create_engine(DB_URL, echo=True)
 
 with engine.connect() as connection:

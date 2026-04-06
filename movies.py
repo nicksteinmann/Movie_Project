@@ -1,6 +1,15 @@
 import statistics
 import random
 import movie_storage_sql as storage
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
+
+API_URL = f"http://www.omdbapi.com/?apikey={API_KEY}&t={title}"
 
 
 def main():
@@ -82,8 +91,8 @@ def add_movie():
     Returns:
         None
 
-    Prompts the user for title, year, and rating.
-    Uses movie_storage.add_movie to persist data.
+    Prompts the user for title.
+    Uses storage.add_movie to persist data.
     """
     movies = storage.list_movies()
 

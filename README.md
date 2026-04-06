@@ -42,7 +42,7 @@ The goal of this project is to demonstrate working with databases, APIs, and dyn
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/movie-app.git
+git clone https://github.com/nicksteinmann/Movie_Project.git
 cd movie-app
 ```
 
@@ -108,7 +108,8 @@ movie-app/
 │ 
 ├── static/ 
 │   ├── index_template.html 
-│   └── style.css 
+│   ├── style.css 
+│   └── index.html
 │ 
 ├── main.py 
 ├── movies.py 

@@ -1,6 +1,17 @@
-import movie_storage
 import statistics
 import random
+import movie_storage_sql as storage
+
+
+def command_list_movies():
+    """Retrieve and display all movies from the database."""
+    movies = storage.list_movies()
+    print(f"{len(movies)} movies in total")
+    for movie, data in movies.items():
+        print(f"{movie} ({data['year']}): {data['rating']}")
+
+
+...
 
 
 def main():
@@ -62,7 +73,7 @@ def list_movies():
 
     Loads movies from the JSON file using movie_storage.
     """
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     if not movies:
         print("No movies in database.")
         return
@@ -85,7 +96,7 @@ def add_movie():
     Prompts the user for title, year, and rating.
     Uses movie_storage.add_movie to persist data.
     """
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
 
     while True:
         title = input("Enter movie title: ").strip()
@@ -115,7 +126,7 @@ def add_movie():
         except ValueError:
             print("Rating must be a number. Try again.")
 
-    movie_storage.add_movie(title, year, rating)
+    storage.add_movie(title, year, rating)
     print(f"Movie '{title}' successfully added.")
 
 
@@ -132,7 +143,7 @@ def delete_movie():
     Returns:
         None
     """
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     title = input("Enter movie title to delete: ").strip()
     if not title:
         print("Title cannot be empty.")
@@ -140,7 +151,7 @@ def delete_movie():
     if title not in movies:
         print("Movie not found.")
         return
-    movie_storage.delete_movie(title)
+    storage.delete_movie(title)
     print(f"Movie '{title}' deleted.")
 
 
@@ -157,7 +168,7 @@ def update_movie():
     Returns:
         None
     """
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     title = input("Enter movie title to update: ").strip()
     if not title:
         print("Title cannot be empty.")
@@ -177,7 +188,7 @@ def update_movie():
         except ValueError:
             print("Rating must be a number. Try again.")
 
-    movie_storage.update_movie(title, rating)
+    storage.update_movie(title, rating)
     print(f"Movie '{title}' updated.")
 
 
@@ -194,7 +205,7 @@ def stats():
     Returns:
         None
     """
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     if not movies:
         print("No movies in database.")
         return
@@ -216,7 +227,7 @@ def stats():
 
 def random_movie():
     """Displays a random movie from the database."""
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     if not movies:
         print("No movies in database.")
         return
@@ -227,7 +238,7 @@ def random_movie():
 
 def search_movie():
     """Searches for movies containing a substring in the title."""
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     query = input("Enter part of the movie name: ").strip().lower()
     if not query:
         print("Search query cannot be empty.")
@@ -243,7 +254,7 @@ def search_movie():
 
 def sort_movies():
     """Displays all movies sorted by rating (descending)."""
-    movies = movie_storage.get_movies()
+    movies = storage.list_movies()
     sorted_movies = sorted(movies.items(), key=lambda x: x[1]['rating'], reverse=True)
     for title, info in sorted_movies:
         print(f"{title} ({info['year']}) - Rating: {info['rating']}")
